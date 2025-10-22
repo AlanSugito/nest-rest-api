@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { AuthMiddleware } from 'src/common/middlewares/auth.middleware';
+import { AuthMiddleware } from '../common/middlewares/auth.middleware';
 import { ReviewController } from './review.controller';
 import { ReviewService } from './review.service';
 import { PrismaClient } from '@prisma/client';

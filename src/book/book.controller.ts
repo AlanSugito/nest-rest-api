@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   ParseBoolPipe,
   ParseIntPipe,
@@ -34,13 +35,17 @@ export class BookController {
     @Param('id', ParseIntPipe) id: number,
     @Query('withReviews', ParseBoolPipe) withReviews: boolean = false,
   ) {
-    return await this.bookService.getBookById(id, withReviews);
+    const book = await this.bookService.getBookById(id, withReviews);
+
+    if (!book) throw new NotFoundException('no book found!');
+
+    return book;
   }
 
   @Put('/:id')
   async editBook(
     @Param('id', ParseIntPipe) id: number,
-    @Body() body: Partial<CreateBookDTO>,
+    @Body() body: CreateBookDTO,
   ) {
     return await this.bookService.editBook(id, body);
   }

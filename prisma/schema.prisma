@@ -26,6 +26,8 @@ model Book {
   year    Int
   author  String   @db.VarChar(250)
   reviews Review[]
+
+  @@map("books")
 }
 
 model Review {
@@ -36,4 +38,6 @@ model Review {
 
   user User @relation(fields: [userId], references: [id])
   book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
 }
