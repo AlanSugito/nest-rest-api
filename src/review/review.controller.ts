@@ -34,7 +34,7 @@ export class ReviewController {
   @Put('/:id')
   async editReview(
     @Param('id', ParseIntPipe) id: number,
-    @Body() body: Partial<CreateReviewDTO>,
+    @Body() body: Pick<CreateReviewDTO, 'content'>,
   ) {
     return await this.reviewService.editReview(id, body);
   }

@@ -8,7 +8,7 @@ export class ReviewService {
 
   async createReview(userId: number, data: CreateReviewDTO) {
     return await this.prisma.review.create({
-      data: { ...data, userId },
+      data: { bookId: data.bookId, content: data.content, userId },
       select: { id: true },
     });
   }
