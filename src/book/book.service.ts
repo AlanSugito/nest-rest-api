@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { CreateBookDTO } from './book.dto';
 
@@ -30,12 +30,20 @@ export class BookService {
   }
 
   async editBook(id: number, data: Partial<CreateBookDTO>) {
+    const book = await this.prisma.book.findUnique({ where: { id } });
+
+    if (!book) throw new NotFoundException('no book to be updated');
+
     const result = await this.prisma.book.update({ where: { id }, data });
 
     return result;
   }
 
   async deleteBook(id: number) {
+    const book = await this.prisma.book.findUnique({ where: { id } });
+
+    if (!book) throw new NotFoundException('no book to be deleted');
+
     return await this.prisma.book.delete({ where: { id } });
   }
 }
