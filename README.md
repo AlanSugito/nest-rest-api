@@ -1,3 +1,24 @@
+## Tech Stack
+
+- NestJs
+- PostgreSQL
+- PrismaORM
+
+### Run Project
+
+```
+npm install
+
+npx prisma migrate dev
+
+npm run start
+```
+
+### API Docs
+
+Dokumentasi bisa diakses setelah menjalankan program pada endpoint:
+http://localhost:3000/api/docs
+
 ### Pattern (Modular)
 
 NestJS didesain berbasis modular untuk menjaga arsitektur yang terorganisir dan scalable.

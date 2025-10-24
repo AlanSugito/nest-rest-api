@@ -36,13 +36,6 @@ describe('Book API', () => {
     return res.body as { id: number };
   };
 
-  const createTestBookReview = async (bookId: number) => {
-    await request(app.getHttpServer())
-      .post('/reviews')
-      .set('Authorization', `Bearer ${token}`)
-      .send({ bookId, content: 'testContent', year: 2025 });
-  };
-
   const deleteTestBook = async (id: number) => {
     await request(app.getHttpServer())
       .delete(`/books/${id}`)
@@ -124,7 +117,6 @@ describe('Book API', () => {
 
     it('should success return book detail with reviews', async () => {
       const book = await createTestBook();
-      await createTestBookReview(book.id);
 
       const res = await request(app.getHttpServer())
         .get(`/books/${book.id}?withReviews=true`)

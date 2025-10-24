@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { LoginDTO, RegisterDTO } from './user.dto';
 import bcrypt from 'bcrypt';
@@ -16,6 +12,12 @@ export class UserService {
   ) {}
 
   async register(data: RegisterDTO) {
+    const user = await this.prisma.user.findFirst({
+      where: { username: data.username },
+    });
+
+    if (user) throw new BadRequestException();
+
     const saltRounds = 10;
 
     data.password = await bcrypt.hash(data.password, saltRounds);
@@ -28,7 +30,7 @@ export class UserService {
   async login({ username, password }: LoginDTO) {
     const user = await this.prisma.user.findFirst({ where: { username } });
 
-    if (!user) throw new NotFoundException();
+    if (!user) throw new BadRequestException();
 
     if (!bcrypt.compareSync(password, user.password))
       throw new BadRequestException();
