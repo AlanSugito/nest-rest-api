@@ -16,7 +16,7 @@ export class UserService {
       where: { username: data.username },
     });
 
-    if (user) throw new BadRequestException();
+    if (user) throw new BadRequestException('username already in use!');
 
     const saltRounds = 10;
 
@@ -30,10 +30,10 @@ export class UserService {
   async login({ username, password }: LoginDTO) {
     const user = await this.prisma.user.findFirst({ where: { username } });
 
-    if (!user) throw new BadRequestException();
+    if (!user) throw new BadRequestException('invalid username or password');
 
     if (!bcrypt.compareSync(password, user.password))
-      throw new BadRequestException();
+      throw new BadRequestException('invalid username or password');
 
     const accessToken = this.jwt.sign(
       { id: user.id },
