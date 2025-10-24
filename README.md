@@ -17,7 +17,7 @@ npm run start
 ### API Docs
 
 Dokumentasi bisa diakses setelah menjalankan program pada endpoint:
-http://localhost:3000/api/docs
+http://localhost:{PORT}/api/docs
 
 ### Pattern (Modular)
 
