@@ -178,6 +178,15 @@ describe('Book API', () => {
       expect(res.statusCode).toBe(400);
     });
 
+    it('should return 404 when requested book is not found', async () => {
+      const res = await request(app.getHttpServer())
+        .put(`/books/9999`)
+        .set('Authorization', `Bearer ${token}`)
+        .send({ title: 'editedTitle', author: '', year: 100 });
+
+      expect(res.statusCode).toBe(404);
+    });
+
     it('should return 401 when no token provided', async () => {
       const res = await request(app.getHttpServer()).put('/books/1');
 
@@ -200,6 +209,14 @@ describe('Book API', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(deletedRes.statusCode).toBe(404);
+    });
+
+    it('should return 404 when requested book is not found', async () => {
+      const res = await request(app.getHttpServer())
+        .delete(`/books/9999`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(res.statusCode).toBe(404);
     });
 
     it('should return 401 when no token provided', async () => {

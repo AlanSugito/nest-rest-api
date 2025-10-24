@@ -94,6 +94,15 @@ describe('Review API', () => {
       await deleteTestBook(book.id);
     });
 
+    it('should return 404 when no book to be reviewed found', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/reviews')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ bookId: 99999, content: 'testContent' });
+
+      expect(res.statusCode).toBe(404);
+    });
+
     it('should return 401 when no token provided', async () => {
       const res = await request(app.getHttpServer()).post('/reviews');
 
@@ -114,6 +123,14 @@ describe('Review API', () => {
       expect(res.body).toHaveLength(1);
 
       await deleteTestBook(book.id);
+    });
+
+    it('should return 404 when requested book is not found', async () => {
+      const res = await request(app.getHttpServer())
+        .get(`/reviews/9999`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(res.statusCode).toBe(404);
     });
 
     it('should return 401 when no token provided', async () => {
@@ -146,6 +163,15 @@ describe('Review API', () => {
       await deleteTestBook(book.id);
     });
 
+    it('should return 404 when no requested review can be updated', async () => {
+      const res = await request(app.getHttpServer())
+        .put(`/reviews/999999`)
+        .set('Authorization', `Bearer ${token}`)
+        .send({ content: 'editedContent' });
+
+      expect(res.statusCode).toBe(404);
+    });
+
     it('should return 401 when no token provided', async () => {
       const res = await request(app.getHttpServer()).put('/reviews/1');
 
@@ -172,6 +198,14 @@ describe('Review API', () => {
       expect(body).toHaveLength(0);
 
       await deleteTestBook(book.id);
+    });
+
+    it('should return 404 when no review can be deleted', async () => {
+      const res = await request(app.getHttpServer())
+        .delete(`/reviews/9999`)
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(res.statusCode).toBe(404);
     });
 
     it('should return 401 when no token provided', async () => {
